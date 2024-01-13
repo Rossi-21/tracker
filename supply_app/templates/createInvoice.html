@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{form.department}}
+        </div>
+        <div class="form-group col-md-3">
+            {{form.vendor}}
+        </div>
+        <div class="form-group col-md-3">
+            {{form.start_date}}
+        </div>
+        <div class="form-group col-md-3">
+            {{form.end_date}}
+        </div>
+    </div>
+    {{ form.department }}
+    <button type="submit">Submit</button>
+</form>
+<a href="{% url 'home' %}">Home</a>
+{% endblock %}

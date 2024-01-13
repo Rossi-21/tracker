@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Sum
 from .models import *
 from .forms import *
 
@@ -6,13 +7,14 @@ from .forms import *
 def home(request):
     invoices = Invoice.objects.all()
     form = InvoiceFilterForm()
+    total_sum = 0
     if request.method == 'POST':
         form = InvoiceFilterForm(request.POST)
         if form.is_valid():
             # Build the filter parameters based on form input
             filter_params = {}
-            if form.cleaned_data['total_gt']:
-                filter_params['total__gt'] = form.cleaned_data['total_gt']
+            if form.cleaned_data['department']:
+                filter_params['department__name__icontains'] = form.cleaned_data['department']
             if form.cleaned_data['date_start']:
                 filter_params['date__gte'] = form.cleaned_data['date_start']
             if form.cleaned_data['date_end']:
@@ -23,10 +25,31 @@ def home(request):
             # Query the database with the filter parameters
             filtered_invoices = Invoice.objects.filter(**filter_params)
 
-            return render(request, 'index.html', {'invoices': filtered_invoices, 'form': form})
+            if filtered_invoices:
+                total_sum = round(filtered_invoices.aggregate(
+                    Sum('total'))['total__sum'] or 0, 2)
+
+            return render(request, 'index.html', {'invoices': filtered_invoices, 'form': form, 'total_sum': total_sum})
 
     context = {
         'invoices': invoices,
         'form': form,
+        'total_sum': total_sum,
     }
     return render(request, 'index.html', context)
+
+
+def createInvoice(request):
+    form = InvoiceCreateForm()
+
+    if request.method == 'POST':
+        form = InvoiceCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return redirect("home")
+
+    context = {
+        'form': form
+    }
+    return render(request, 'createInvoice.html', context)

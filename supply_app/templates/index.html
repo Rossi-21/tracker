@@ -6,12 +6,13 @@
     {{ form.as_p }}
     <button type="submit">Filter</button>
 </form>
-
+<a href="{% url 'create-invoice' %}">+Invoice</a>
     <h1>Filtered forms</h1>
     {% if invoices %}
     <table id="invoiceTable" class="table table-bordered">
         <thead>
             <tr>
+                <th>Date</th>
                 <th>Vendor</th>
                 <th>Department</th>
                 <th>Invoice Total</th> 
@@ -20,6 +21,7 @@
         <tbody>
             {% for invoice in invoices %}
             <tr>
+                <td>{{ invoice.date }}</td>
                 <td>{{ invoice.vendor }}</td>
                 <td>{{ invoice.department }}</td>
                 <td>{{ invoice.total }}</td>
@@ -29,5 +31,9 @@
     </table>
     {% else %}
     <p>No invoices match the selected criteria.</p>
+    {% endif %}
+    <h1>Filtered Invoices</h1>
+    {% if total_sum %}
+        <p>Total Sum: {{ total_sum }}</p>
     {% endif %}
 {% endblock %}

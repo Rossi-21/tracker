@@ -11,8 +11,22 @@ class InvoiceCreateForm(ModelForm):
 
 
 class InvoiceFilterForm(forms.Form):
-    total_gt = forms.FloatField(required=False, label='Total greater than')
-    date_start = forms.DateField(required=False, label='Start date')
-    date_end = forms.DateField(required=False, label='End date')
+    department = forms.ModelChoiceField(queryset=Department.objects.all(
+    ), required=False, label='Department', empty_label='Select Department')
+    date_start = forms.DateField(required=False, label='Start date', widget=forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
+    date_end = forms.DateField(required=False, label='End date', widget=forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
     vendor_name = forms.CharField(
-        max_length=128, required=False, label='Vendor name')
+        max_length=128, required=False, label='Vendor')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['department'].widget.attrs.update(
+            {'class': 'form-control'})
+        self.fields['vendor_name'].widget.attrs.update(
+            {'class': 'form-control'})
+        self.fields['date_start'].widget.attrs.update(
+            {'class': 'form-control selectpicker'})
+        self.fields['date_end'].widget.attrs.update(
+            {'class': 'form-control'})
