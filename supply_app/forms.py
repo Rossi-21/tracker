@@ -5,9 +5,19 @@ from .models import *
 
 class InvoiceCreateForm(ModelForm):
     class Meta:
-
         model = Invoice
         fields = ['vendor', 'department', 'total', 'date']
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['department'].widget.attrs.update(
+                {'class': 'form-control'})
+            self.fields['vendor'].widget.attrs.update(
+                {'class': 'form-control'})
+            self.fields['total'].widget.attrs.update(
+                {'class': 'form-control'})
+            self.fields['date'].widget.attrs.update(
+                {'class': 'form-control'})
 
 
 class InvoiceFilterForm(forms.Form):
@@ -17,8 +27,8 @@ class InvoiceFilterForm(forms.Form):
         attrs={'type': 'date', 'class': 'form-control'}))
     date_end = forms.DateField(required=False, label='End date', widget=forms.DateInput(
         attrs={'type': 'date', 'class': 'form-control'}))
-    vendor_name = forms.CharField(
-        max_length=128, required=False, label='Vendor')
+    vendor_name = forms.ModelChoiceField(queryset=Vendor.objects.all(
+    ), required=False, label='Vendor', empty_label="Select Vendor")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,6 +37,6 @@ class InvoiceFilterForm(forms.Form):
         self.fields['vendor_name'].widget.attrs.update(
             {'class': 'form-control'})
         self.fields['date_start'].widget.attrs.update(
-            {'class': 'form-control selectpicker'})
+            {'class': 'form-control'})
         self.fields['date_end'].widget.attrs.update(
             {'class': 'form-control'})

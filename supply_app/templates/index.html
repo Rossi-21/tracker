@@ -1,39 +1,52 @@
 {% extends 'main.html' %}
 {% block content %}
-
-<form method="post" action="{% url 'home' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Filter</button>
-</form>
-<a href="{% url 'create-invoice' %}">+Invoice</a>
-    <h1>Filtered forms</h1>
-    {% if invoices %}
-    <table id="invoiceTable" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Vendor</th>
-                <th>Department</th>
-                <th>Invoice Total</th> 
-            </tr>
-        </thead>
-        <tbody>
-            {% for invoice in invoices %}
-            <tr>
-                <td>{{ invoice.date }}</td>
-                <td>{{ invoice.vendor }}</td>
-                <td>{{ invoice.department }}</td>
-                <td>{{ invoice.total }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No invoices match the selected criteria.</p>
-    {% endif %}
-    <h1>Filtered Invoices</h1>
-    {% if total_sum %}
-        <p>Total Sum: {{ total_sum }}</p>
-    {% endif %}
+<div class="container p-5">
+    <div class="card border border-dark">
+        <div class="card-header">
+            <h2>Filter</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit">Filter</button>
+            </form>
+        </div>    
+    </div>
+    <a href="{% url 'create-invoice' %}">+Invoice</a>
+    <div class="card border border-dark">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Invoices</h2>
+            {% if total_sum %}
+                <h2>Total: ${{ total_sum }}</h2>
+            {% endif %}  
+        </div>
+        <div class="card-body">
+            {% if invoices %}
+                <table id="invoiceTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Vendor</th>
+                            <th>Department</th>
+                            <th>Invoice Total</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in invoices %}
+                            <tr>
+                                <td>{{ invoice.date }}</td>
+                                <td>{{ invoice.vendor }}</td>
+                                <td>{{ invoice.department }}</td>
+                                <td>${{ invoice.total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No invoices match the selected criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
