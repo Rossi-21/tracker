@@ -16,7 +16,16 @@
             <a class="card-link" href="{% url 'home' %}">Home</a>
         </div>
     </div>
+    <div>
+        <table class="table table-bordered mt-3">
+            {% for invoice in invoices%}
+                <tr>
+                    <td>{{ invoice.vendor }}</td>
+                    <td>{{ invoice.department }}</td>
+                    <td>${{ invoice.total }}</td>
+                </tr>
+            {% endfor %}
+        </table>  
+    </div>
 </div>
-
-
 {% endblock %}

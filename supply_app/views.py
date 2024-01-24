@@ -41,15 +41,33 @@ def home(request):
 
 def createInvoice(request):
     form = InvoiceCreateForm()
+    invoices = Invoice.objects.order_by('-id')[:3]
 
     if request.method == 'POST':
         form = InvoiceCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
-            return redirect("home")
+            return redirect(request.META.get('HTTP_REFERER'))
 
     context = {
-        'form': form
+        'form': form,
+        'invoices': invoices
     }
     return render(request, 'createInvoice.html', context)
+
+
+def viewData(request):
+    # Aggregate data by vendor and calculate the sum of invoice totals
+    vendor_totals = Invoice.objects.values(
+        'vendor__name').annotate(total_sum=Sum('total'))
+
+    # Extract labels and data for Chart.js
+    vendor_labels = [entry['vendor__name'] for entry in vendor_totals]
+    total_sums = [entry['total_sum'] for entry in vendor_totals]
+
+    context = {
+        'vendor_labels': vendor_labels,
+        'total_sums': total_sums,
+    }
+    return render(request, 'viewData.html', context)

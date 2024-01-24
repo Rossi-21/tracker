@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="container p-5">
+    <div class="card car-border border-dark">
+        <div class="card">
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: data: data: {
+                labels: [{% for label in vendor_labels %}'{{ label }}',{% endfor %}],
+                datasets: [{
+                    label: 'Total Invoice Amount',
+                    data: [{% for total in total_sums %}{{ total }},{% endfor %}],
+                    borderWidth: 1
+                }]
+            },
+                options: {
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
+                }
+                }
+            });
+            </script> 
+        </div>
+    </div>
+</div>
+
+{% endblock %}
