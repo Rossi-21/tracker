@@ -74,8 +74,19 @@ def invoiceTotalView(request):
 
 
 def invoiceDepartmentView(request):
+    # Calulate total spend for each department
+    department_totals = Invoice.objects.values(
+        'department__name').annotate(total_spend=Sum('total'))
+    # Remove departments with $0 spend
+    department_totals = [
+        entry for entry in department_totals if entry['total_spend'] > 0]
+    # Extract data for Chart.js
+    department_labels = [entry['department__name']
+                         for entry in department_totals]
+    total_spend = [entry['total_spend'] for entry in department_totals]
 
     context = {
-
+        'department_labels': department_labels,
+        'total_spend': total_spend
     }
     return render(request, 'invoiceDepartmentView.html', context)

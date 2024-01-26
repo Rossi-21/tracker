@@ -2,9 +2,44 @@
 {% block content %}
 <div class="container p-5">
     <a href="{% url 'home' %}">Home | </a>
-    <a href="{% url 'invoice-department-view' %}">By Department</a>
+    <a href="{% url 'invoice-total-view' %}">By Vendor</a>
     <div class="card card-border border-dark">
         <div style="width: 100%;">
+            <!-- viewData.html -->
+
+<div class="card">
+    <div>
+        <canvas id="barGraph"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctxBarGraph = document.getElementById('barGraph');
+        new Chart(ctxBarGraph, {
+            type: 'bar',
+            data: {
+                labels: [{% for label in department_labels %}'{{ label }}',{% endfor %}],
+                datasets: [{
+                    label: 'Total Spend by Department',
+                    data: [{% for spend in total_spend %}{{ spend }},{% endfor %}],
+                    backgroundColor: 'blue',
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Spend',
+                        },
+                    },
+                },
+            },
+        });
+    </script>
+</div>
+
         </div>
     </div>
 </div>
