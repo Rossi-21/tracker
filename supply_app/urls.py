@@ -9,5 +9,6 @@ urlpatterns = [
          name="invoice-department-view"),
     path('data/storesupplies', views.storeSupplies, name="store-supplies"),
     path('data/deli', views.deli, name="deli"),
-
+    path('data/grocery', views.grocery, name="grocery"),
+    path('data/meat', views.meat, name="meat")
 ]

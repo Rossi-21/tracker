@@ -5,7 +5,7 @@
     <a href="{% url 'invoice-total-view' %}">By Vendor | </a>
     <a href="{% url 'invoice-department-view' %}">By Department | </a>
     <a href="{% url 'store-supplies' %}">Store Supplies | </a>
-    <a href="{% url 'grocery' %}">Grocery | </a>
+    <a href="{% url 'deli' %}">Deli | </a>
     <a href="{% url 'meat' %}">Meat</a>
 
     <div class="card card-border border-dark">
@@ -24,10 +24,10 @@
                     data: {
                         labels: dates,
                         datasets: [{
-                            label: 'Invoice Total - Deli',
+                            label: 'Invoice Total - Grocery',
                             data: invoice_totals,
                             fill: false,
-                            borderColor: 'green',
+                            borderColor: 'red',
                         }],
                     },
                     options: {
