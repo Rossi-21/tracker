@@ -99,7 +99,7 @@ def storeSupplies(request):
     invoices = Invoice.objects.filter(department=department).order_by('date')
 
     # Extract data for Chart.js
-    dates = [invoice.date.strftime('%Y-%m-%d') for invoice in invoices]
+    dates = [invoice.date.strftime('%m-%d') for invoice in invoices]
     invoice_totals = [invoice.total for invoice in invoices]
 
     context = {

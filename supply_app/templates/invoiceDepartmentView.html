@@ -16,13 +16,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctxBarGraph = document.getElementById('barGraph');
+        const department_name = [{% for label in department_labels %}'{{ label }}',{% endfor %}];
+        const spend = [{% for spend in total_spend %}{{ spend }},{% endfor %}];
         new Chart(ctxBarGraph, {
             type: 'bar',
             data: {
-                labels: [{% for label in department_labels %}'{{ label }}',{% endfor %}],
+                labels:department_name ,
                 datasets: [{
                     label: 'Total Spend by Department',
-                    data: [{% for spend in total_spend %}{{ spend }},{% endfor %}],
+                    data: spend,
                     backgroundColor: 'blue',
                     borderWidth: 1,
                 }],

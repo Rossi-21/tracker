@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container p-5">
     <a href="{% url 'home' %}">Home | </a>
-    <a href="{% url 'invoice-department-view' %}">By Department</a>
+    <a href="{% url 'invoice-department-view' %}">By Department | </a>
     <a href="{% url 'store-supplies' %}">Store Supplies</a>
     <div class="card card-border border-dark">
         <div style="width: 100%;">
@@ -12,13 +12,16 @@
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
             const ctx = document.getElementById('myChart');
+            const vendor_name = [{% for label in vendor_labels %}'{{ label }}',{% endfor %}];
+            const total = [{% for total in total_sums %}{{ total }},{% endfor %}];
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                labels: [{% for label in vendor_labels %}'{{ label }}',{% endfor %}],
+                labels: vendor_name ,
                 datasets: [{
                     label: 'Total Spend',
-                    data: [{% for total in total_sums %}{{ total }},{% endfor %}],
+                    data: total ,
+                    backgroundColor: 'blue',
                     borderWidth: 1
                 }]
             },
