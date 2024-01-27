@@ -108,3 +108,21 @@ def storeSupplies(request):
         'department_name': department.name
     }
     return render(request, 'storeSupplies.html', context)
+
+
+def deli(request):
+    # Get the Department
+    department = Department.objects.get(name='Deli')
+    # Retrive invoices from the Store Supplies department
+    invoices = Invoice.objects.filter(department=department).order_by('date')
+
+    # Extract data for Chart.js
+    dates = [invoice.date.strftime('%m-%d') for invoice in invoices]
+    invoice_totals = [invoice.total for invoice in invoices]
+
+    context = {
+        'dates': dates,
+        'invoice_totals': invoice_totals,
+        'department_name': department.name
+    }
+    return render(request, 'deli.html', context)
