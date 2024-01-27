@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="container p-5">
+    <a href="{% url 'home' %}">Home | </a>
+    <a href="{% url 'invoice-total-view' %}">By Vendor</a>
+    <div class="card card-border border-dark">
+        <div style="width: 100%;">
+            <div>
+                <canvas id="storeSuppliesLineChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const dates = ['2022-01-01', '2022-01-02', '2022-01-03'];
+                const invoice_totals = [100, 150, 120];
+        
+                const ctxStoreSuppliesLineChart = document.getElementById('storeSuppliesLineChart');
+                new Chart(ctxStoreSuppliesLineChart, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Invoice Total - Store Supplies',
+                            data: invoice_totals,
+                            fill: false,
+                            borderColor: 'green',
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date',
+                                },
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Invoice Total',
+                                },
+                            },
+                        },
+                    },
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}

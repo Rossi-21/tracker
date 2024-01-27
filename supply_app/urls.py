@@ -7,5 +7,6 @@ urlpatterns = [
     path('data/total', views.invoiceTotalView, name="invoice-total-view"),
     path('data/department', views.invoiceDepartmentView,
          name="invoice-department-view"),
+    path('data/storesupplies', views.storeSupplies, name="store-supplies")
 
 ]
