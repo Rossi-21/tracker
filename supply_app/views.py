@@ -92,10 +92,10 @@ def invoiceDepartmentView(request):
     return render(request, 'invoiceDepartmentView.html', context)
 
 
-def storeSupplies(request):
+def department_chart(request, department_name, template_name):
     # Get the Department
-    department = Department.objects.get(name='Store Supplies')
-    # Retrive invoices from the Store Supplies department
+    department = Department.objects.get(name=department_name)
+    # Retrieve invoices from the specified department
     invoices = Invoice.objects.filter(department=department).order_by('date')
 
     # Extract data for Chart.js
@@ -107,58 +107,21 @@ def storeSupplies(request):
         'invoice_totals': invoice_totals,
         'department_name': department.name
     }
-    return render(request, 'storeSupplies.html', context)
+
+    return render(request, template_name, context)
+
+
+def storeSupplies(request):
+    return department_chart(request, 'Store Supplies', 'storeSupplies.html')
 
 
 def deli(request):
-    # Get the Department
-    department = Department.objects.get(name='Deli')
-    # Retrive invoices from the Store Supplies department
-    invoices = Invoice.objects.filter(department=department).order_by('date')
-
-    # Extract data for Chart.js
-    dates = [invoice.date.strftime('%m-%d') for invoice in invoices]
-    invoice_totals = [invoice.total for invoice in invoices]
-
-    context = {
-        'dates': dates,
-        'invoice_totals': invoice_totals,
-        'department_name': department.name
-    }
-    return render(request, 'deli.html', context)
+    return department_chart(request, 'Deli', 'deli.html')
 
 
 def grocery(request):
-    # Get the Department
-    department = Department.objects.get(name='Grocery')
-    # Retrive invoices from the Store Supplies department
-    invoices = Invoice.objects.filter(department=department).order_by('date')
-
-    # Extract data for Chart.js
-    dates = [invoice.date.strftime('%m-%d') for invoice in invoices]
-    invoice_totals = [invoice.total for invoice in invoices]
-
-    context = {
-        'dates': dates,
-        'invoice_totals': invoice_totals,
-        'department_name': department.name
-    }
-    return render(request, 'grocery.html', context)
+    return department_chart(request, 'Grocery', 'grocery.html')
 
 
 def meat(request):
-    # Get the Department
-    department = Department.objects.get(name='Meat')
-    # Retrive invoices from the Store Supplies department
-    invoices = Invoice.objects.filter(department=department).order_by('date')
-
-    # Extract data for Chart.js
-    dates = [invoice.date.strftime('%m-%d') for invoice in invoices]
-    invoice_totals = [invoice.total for invoice in invoices]
-
-    context = {
-        'dates': dates,
-        'invoice_totals': invoice_totals,
-        'department_name': department.name
-    }
-    return render(request, 'meat.html', context)
+    return department_chart(request, 'Meat', 'meat.html')
