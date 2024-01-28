@@ -6,6 +6,7 @@
             <h2>Filter</h2>
         </div>
         <div class="card-body">
+            <!-- Filter Invoices Form -->
             <form method="post" action="{% url 'home' %}">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -13,6 +14,7 @@
             </form>
         </div>    
     </div>
+    <!-- Links -->
     <div class="d-flex justify-content-between">
         <a href="{% url 'create-invoice' %}">+Invoice</a>
         <a  href="{% url 'invoice-total-view' %}">View Data</a>
@@ -21,10 +23,12 @@
     <div class="card border border-dark">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2>Invoices</h2>
+            <!-- Display Total Sum -->
             {% if total_sum %}
                 <h2>Total: ${{ total_sum }}</h2>
             {% endif %}  
         </div>
+        <!-- Display Filtered Invoices -->
         <div class="card-body">
             {% if invoices %}
                 <table id="invoiceTable" class="table table-bordered">

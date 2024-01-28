@@ -5,10 +5,15 @@ from .forms import *
 
 
 def home(request):
+    # Get all invoices for the Database
     invoices = Invoice.objects.all()
+    # Select form from forms.py for the view
     form = InvoiceFilterForm()
+    # Sum Variable
     total_sum = 0
+
     if request.method == 'POST':
+        # Grab the form for processing
         form = InvoiceFilterForm(request.POST)
         if form.is_valid():
             # Build the filter parameters based on form input
@@ -26,6 +31,7 @@ def home(request):
             filtered_invoices = Invoice.objects.filter(**filter_params)
 
             if filtered_invoices:
+                # Add the totals together to display the correct sum
                 total_sum = round(filtered_invoices.aggregate(
                     Sum('total'))['total__sum'] or 0, 2)
 
@@ -40,12 +46,16 @@ def home(request):
 
 
 def createInvoice(request):
+    # Select form from forms.py for the view
     form = InvoiceCreateForm()
+    # Get the last three invoices form the database
     invoices = Invoice.objects.order_by('-id')[:3]
 
     if request.method == 'POST':
+        # Grab the form for processing
         form = InvoiceCreateForm(request.POST)
         if form.is_valid():
+            # If the form is valid save it to the database
             form.save()
 
             return redirect(request.META.get('HTTP_REFERER'))

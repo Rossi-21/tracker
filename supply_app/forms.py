@@ -5,9 +5,12 @@ from .models import *
 
 class InvoiceCreateForm(ModelForm):
     class Meta:
+        # Select your model
         model = Invoice
+        # Choose the fields you want to show
         fields = ['vendor', 'department', 'total', 'date']
 
+        # Apply Bootstrap CSS
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['department'].widget.attrs.update(
@@ -21,6 +24,7 @@ class InvoiceCreateForm(ModelForm):
 
 
 class InvoiceFilterForm(forms.Form):
+    # Set the form fields
     department = forms.ModelChoiceField(queryset=Department.objects.all(
     ), required=False, label='Department', empty_label='Select Department')
     date_start = forms.DateField(required=False, label='Start date', widget=forms.DateInput(
@@ -30,6 +34,7 @@ class InvoiceFilterForm(forms.Form):
     vendor_name = forms.ModelChoiceField(queryset=Vendor.objects.all(
     ), required=False, label='Vendor', empty_label="Select Vendor")
 
+    # Apply Bootstrap CSS
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['department'].widget.attrs.update(
